@@ -14,6 +14,9 @@ async function search(query) {
       query: {
       match: {"title":query}
     },
+    sort: [{
+      "download_count" : {"order" : "desc"}
+   }]
   }
     
   });
