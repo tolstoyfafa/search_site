@@ -10,19 +10,24 @@ const client = new elasticsearch.Client( {
 async function search(query) {
   const out = await client.search({  
     index: 'books',
+
     body:{
       query: {
-      match: {"title":query}
-    },
+
+        multi_match : {
+          query: query,
+          fields: [ "title", "subjects" ]
+        }
+        
+    }/* ,
     sort: [{
       "download_count" : {"order" : "desc"}
-   }]
+   }] */
   }
     
   });
-  console.log(out.hits.hits)
-  // appeler elasticsearch pour effectuer la recherche
   return out.hits.hits
 }
+
 
 module.exports = search
