@@ -16,8 +16,9 @@ async function search(query) {
 						"authors.name^2",
 						"subjects^1",
 					],
-				}
-			}
+          fuzziness: "AUTO",
+				},
+			},
 		}
 	})
 	return results.hits
