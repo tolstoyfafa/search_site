@@ -5,9 +5,22 @@ search results
 </h1>
 
 <ul>
-<% books.forEach((book) => { %>
+<% hits.forEach((hit) => { %>
   <li>
-    <%= book.name %>
+    <p>
+      <b><%= hit._source.title %></b> - <i><%= hit._source.download_count %> downloads</i>
+      <br/>
+      <i>
+        <%= hit._source.authors[0].name %>
+      </i>
+    <ul>
+      <% hit._source.subjects.forEach((subject) => { %>
+        <li>
+          <%= subject %>
+        </li>
+      <% }) %>
+    </ul>
+    </p>
   </li>
 <% })%>
 </ul>

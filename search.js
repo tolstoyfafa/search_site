@@ -1,13 +1,19 @@
+const elasticsearch = require('elasticsearch')
+
+const client = new elasticsearch.Client({
+  host: 'localhost:9200',
+})
+
 async function search(query) {
-  // appeler elasticsearch pour effectuer la recherche
-  return [
-    {
-      name: "livre 1",
-    },
-    {
-      name: "livre 2",
-    },
-  ]
+	const results = await client.search({
+		index: "books",
+		body: {
+			query: {
+				match_all: { }
+			}
+		}
+	})
+	return results.hits
 }
 
 module.exports = search
