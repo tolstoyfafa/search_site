@@ -1,13 +1,25 @@
-async function search(query) {
-  // appeler elasticsearch pour effectuer la recherche
-  return [
-    {
-      name: "livre 1",
-    },
-    {
-      name: "livre 2",
-    },
+const elasticsearch = require('elasticsearch');
+
+const client = new elasticsearch.Client( {  
+  hosts: [
+    'http://localhost:9200/'
   ]
+});
+
+
+async function search(query) {
+  const out = await client.search({  
+    index: 'books',
+    body:{
+      query: {
+      match: {"title":query}
+    },
+  }
+    
+  });
+  console.log(out.hits.hits)
+  // appeler elasticsearch pour effectuer la recherche
+  return out.hits.hits
 }
 
 module.exports = search
