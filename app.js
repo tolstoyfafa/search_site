@@ -15,8 +15,12 @@ app.get("/", (req, res) => {
 })
 
 app.get("/search", async (req, res) => {
-  const { hits } = await search(req.query.query)
-  res.render("results", { hits })
+  const { hits, total } = await search(req.query.query)
+  res.render("results", {
+    hits,
+    total,
+    query: req.query.query,
+  })
 })
 
 app.listen(PORT)
