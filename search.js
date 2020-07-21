@@ -9,7 +9,11 @@ async function search(query) {
 		index: "books",
 		body: {
 			query: {
-				match_all: { }
+				match: {
+					title: {
+						query,
+					}
+				}
 			}
 		}
 	})
