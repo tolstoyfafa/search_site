@@ -19,6 +19,15 @@ async function search(query) {
           fuzziness: "AUTO",
 				},
 			},
+      highlight: {
+        pre_tags: `<span style="color: green;">`,
+        post_tags: "</span>",
+        fields: {
+          title: {},
+          "authors.name": {},
+          subjects: {},
+        }
+      }
 		}
 	})
 	return results.hits

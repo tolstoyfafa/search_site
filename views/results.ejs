@@ -1,7 +1,7 @@
 <a href="/" >homepage</a>
 
 <h1>
-search results for <i><%= query %></i>
+search results for <span style="color: green;"><%= query %></span>
 </h1>
 <%= total.value %> results
 
@@ -9,16 +9,27 @@ search results for <i><%= query %></i>
 <% hits.forEach((hit) => { %>
   <li>
     <p>
-      <b><%= hit._source.title %></b> - <i><%= hit._source.download_count %> downloads</i>
+      <% if (hit.highlight.title) { %>
+        <b><%- hit.highlight.title[0] %></b>
+      <% } else { %>
+        <b><%= hit._source.title %></b>
+      <% } %>
+      - <i><%= hit._source.download_count %> downloads</i>
       <br/>
-        <% hit._source.authors.forEach((author) => { %>
-          <i> <%= author.name %> </i>
+        <% if (hit.highlight["authors.name"]) { %>
+          <% hit.highlight["authors.name"].forEach((author) => { %>
+            <%- author %>
+          <% }) %>
+        <% } else { %>
+          <% hit._source.authors.forEach((author) => { %>
+            <%- author.name %>
         <% }) %>
+        <% } %>
     <ul>
-      <% hit._source.subjects.forEach((subject) => { %>
-        <li>
-          <%= subject %>
-        </li>
+        <% hit._source.subjects.forEach((subject) => { %>
+          <li>
+            <%= subject %>
+          </li>
       <% }) %>
     </ul>
     </p>
