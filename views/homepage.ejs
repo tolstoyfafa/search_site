@@ -1,5 +1,11 @@
 <h1>super moteur de recherche</h1>
 <form action="/search" method="GET">
 <input type="text" name="query" placeholder="enter your query"/>
+<select name="sort">
+  <option value="pertinence">Tri par pertinence</option>
+  <option value="downloads">Tri par telechargements</option>
+  <option value="oldest">Tri par age croissant</option>
+  <option value="youngest">Tri par age decroissant</option>
+</select>
 <input type="submit" value="search"/>
 </form>

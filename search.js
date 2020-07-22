@@ -4,7 +4,7 @@ const client = new elasticsearch.Client({
   host: 'localhost:9200',
 })
 
-async function search(query) {
+async function search(query, sort) {
 	const results = await client.search({
 		index: "books",
 		body: {
