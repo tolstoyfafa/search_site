@@ -4,7 +4,26 @@ const client = new elasticsearch.Client({
   host: 'localhost:9200',
 })
 
-async function search(query, sorting_type) {
+async function get_aggs() {
+  const search_query = {
+    index: "books",
+    body: {
+      aggs: {
+        "authors.name": {
+          terms: {
+            field: "authors.name.keyword",
+            size: 20,
+          }
+        }
+      }
+    }
+  }
+
+  const results = await client.search(search_query)
+  return results.aggregations["authors.name"].buckets
+}
+
+async function search(query, sorting_type, authors) {
 
   const custom_sort = []
   switch (sorting_type) {
@@ -44,14 +63,18 @@ async function search(query, sorting_type) {
     index: "books",
     body: {
       query: {
-        multi_match: {
-          query,
-          fields: [
-            "title^3",
-            "authors.name^2",
-            "subjects^1",
-          ],
-          fuzziness: "AUTO",
+        bool: {
+          must: [{
+            multi_match: {
+              query,
+              fields: [
+                "title^3",
+                "authors.name^2",
+                "subjects^1",
+              ],
+              fuzziness: "AUTO",
+            },
+          }],
         },
       },
       highlight: {
@@ -67,8 +90,20 @@ async function search(query, sorting_type) {
     }
   }
 
+  if (authors.length) {
+    search_query.body.query.bool.filter = [{
+        term: {
+          "authors.name.keyword": authors[0]
+        }
+      }]
+  }
+
+  console.log(JSON.stringify(search_query, null, 4))
   const results = await client.search(search_query)
   return results.hits
 }
 
-module.exports = search
+module.exports = {
+  search,
+  get_aggs,
+}

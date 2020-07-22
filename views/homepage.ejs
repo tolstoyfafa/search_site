@@ -8,4 +8,9 @@
   <option value="youngest">Tri par age decroissant</option>
 </select>
 <input type="submit" value="search"/>
+<br/>
+<% aggs.forEach(agg => { %>
+  <input type="radio" name="authors" value="<%= agg.key %>">
+  <label for="authors"><%= agg.key %> (<i><%= agg.doc_count %> books</i>)</label><br>
+<% }) %>
 </form>
