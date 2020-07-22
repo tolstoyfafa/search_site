@@ -1,14 +1,21 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 <a href="/" >homepage</a>
+
 
 <h1>
 search results
 </h1>
 <span onclick="">Order</span>
 <ul>
-<% books.forEach((book) => { %>
+<% hits.forEach((hit) => { %>
   <li>
-    <%= book._source.title %>   
-    <%= book._source.download_count %>
+    <%= hit._source.title %>   
+    <%= hit._source.download_count %>
+    <% hit._source.subjects.forEach(s => { %>
+    <%= s %>
+    <% }) %>
   </li>
-<% })%>
+  <% })%>
+  <%= total.value %>
 </ul>

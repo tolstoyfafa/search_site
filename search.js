@@ -13,20 +13,19 @@ async function search(query) {
 
     body:{
       query: {
-
         multi_match : {
           query: query,
-          fields: [ "title", "subjects" ]
+          fields: [ "title", "subjects", "authors" ]
         }
-        
-    }/* ,
+    },
     sort: [{
       "download_count" : {"order" : "desc"}
-   }] */
+   }],
+   size: 3
   }
     
   });
-  return out.hits.hits
+  return out.hits
 }
 
 
