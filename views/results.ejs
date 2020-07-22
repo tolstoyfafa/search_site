@@ -11,11 +11,9 @@ search results for <i><%= query %></i>
     <p>
       <b><%= hit._source.title %></b> - <i><%= hit._source.download_count %> downloads</i>
       <br/>
-      <i>
         <% hit._source.authors.forEach((author) => { %>
-        <%= author.name %>
+          <i> <%= author.name %> </i>
         <% }) %>
-      </i>
     <ul>
       <% hit._source.subjects.forEach((subject) => { %>
         <li>
