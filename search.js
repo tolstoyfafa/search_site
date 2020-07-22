@@ -66,7 +66,6 @@ async function search(query, sorting_type) {
       sort: custom_sort,
     }
   }
-  console.log(JSON.stringify(search_query, null, 4))
 
   const results = await client.search(search_query)
   return results.hits
