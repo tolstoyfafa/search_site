@@ -12,7 +12,9 @@ search results for <i><%= query %></i>
       <b><%= hit._source.title %></b> - <i><%= hit._source.download_count %> downloads</i>
       <br/>
       <i>
-        <%= hit._source.authors[0].name %>
+        <% hit._source.authors.forEach((author) => { %>
+        <%= author.name %>
+        <% }) %>
       </i>
     <ul>
       <% hit._source.subjects.forEach((subject) => { %>
