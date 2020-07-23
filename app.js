@@ -2,8 +2,9 @@ const express = require("express")
 const ejs = require("ejs")
 const winston = require('winston')
 const expressWinston = require('express-winston')
+const qs = require("querystring")
 
-const { search, get_aggs } = require("./search")
+const { search, get_aggs, get_suggestion } = require("./search")
 
 const app = express()
 
@@ -14,7 +15,6 @@ app.set("view engine", "ejs")
 
 app.use(expressWinston.logger({
   transports: [
-    new winston.transports.Console(),
     new winston.transports.File({
       filename: 'app.log',
       level: 'info'
@@ -46,11 +46,16 @@ app.get("/search", async (req, res) => {
     authors = [req.query.authors]
   else
     authors = req.query.authors
-  const { hits, total } = await search(req.query.query, req.query.sort, authors)
+  const { hits: { hits, total }, suggest: { title_suggestion } } = await search(req.query.query, req.query.sort, authors)
+  const suggestion = get_suggestion(title_suggestion)
   res.render("results", {
     hits,
     total,
     query: req.query.query,
+    suggestion: {
+      suggestion,
+      href: "/search?" + qs.stringify({...req.query, query: suggestion})
+    }
   })
 })
 

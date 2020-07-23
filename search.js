@@ -87,6 +87,14 @@ async function search(query, sorting_type, authors) {
         }
       },
       sort: custom_sort,
+      suggest : {
+        title_suggestion : {
+          text : query,
+          term : {
+            field : "title"
+          }
+        }
+      }
     }
   }
 
@@ -99,10 +107,23 @@ async function search(query, sorting_type, authors) {
   }
 
   const results = await client.search(search_query)
-  return results.hits
+  return results
+}
+
+function get_suggestion(suggestion) {
+  let out = []
+
+  for (let sug of suggestion) {
+    if (sug.options.length)
+      out.push(sug.options[0].text)
+    else
+      out.push(sug.text)
+  }
+  return out.join(" ")
 }
 
 module.exports = {
   search,
   get_aggs,
+  get_suggestion,
 }

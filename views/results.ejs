@@ -3,6 +3,11 @@
 <h1>
 search results for <span style="color: green;"><%= query %></span>
 </h1>
+<% if (suggestion.suggestion != query) { %>
+  <p>
+    did you mean <a href=<%= suggestion.href %> style="color: green;"><%= suggestion.suggestion %></a> ?
+  </p>
+<% } %>
 <%= total.value %> results
 
 <ul>
