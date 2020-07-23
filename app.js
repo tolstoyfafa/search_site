@@ -1,5 +1,7 @@
 const express = require("express")
 const ejs = require("ejs")
+const winston = require('winston')
+const expressWinston = require('express-winston')
 
 const { search, get_aggs } = require("./search")
 
@@ -7,8 +9,27 @@ const app = express()
 
 const PORT = process.env.PORT || 8080
 
-
 app.set("view engine", "ejs")
+
+
+app.use(expressWinston.logger({
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({
+      filename: 'app.log',
+      level: 'info'
+    }),
+  ],
+  format: winston.format.combine(
+    winston.format.colorize(),
+    winston.format.json()
+  ),
+  meta: true,
+  msg: "HTTP {{req.method}} {{req.url}}",
+  expressFormat: true,
+  colorize: false,
+  ignoreRoute: function (req, res) { return false; }
+}));
 
 app.get("/", async (req, res) => {
   const aggs = await get_aggs()
